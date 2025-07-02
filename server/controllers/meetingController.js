@@ -97,7 +97,6 @@ exports.handleMeetingUpload = async (req, res) => {
     res.status(500).json({ error: err.message || 'Something went wrong' });
   }
 };
-
 exports.getAllMeetings = async (req, res) => {
   try {
     const meetings = await Meeting.find().sort({ createdAt: -1 });
@@ -136,6 +135,23 @@ exports.deleteMeeting = async (req, res) => {
     }
 
     res.status(204).send();
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.searchMeetings = async (req, res) => {
+  try {
+    const q = req.query.q;
+    if (!q) {
+      return res.status(400).json({ error: 'Missing query' });
+    }
+
+    const meetings = await Meeting.find({
+      transcript: { $regex: q, $options: 'i' },
+    }).sort({ createdAt: -1 });
+
+    res.json(meetings);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
