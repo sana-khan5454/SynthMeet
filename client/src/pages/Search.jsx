@@ -1,28 +1,29 @@
-import { useState } from 'react';
-import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import { motion } from 'framer-motion';
+import { useState } from 'react';␊
+import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';␊
+import axios from 'axios';
+import Spinner from '../components/Spinner';
 
 export default function Search() {
   const [query, setQuery] = useState('');
-  const [result, setResult] = useState(null);
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault();
     if (!query.trim()) return;
 
-    // TEMP: Static matches (for UI demo)
-    setResult({
-      matches: [
-        {
-          text: "Let's finalize the Q2 marketing roadmap by Friday.",
-          timestamp: '00:03:12',
-        },
-        {
-          text: 'Can someone schedule a follow-up with the design team?',
-          timestamp: '00:12:48',
-        },
-      ],
-    });
+    try {
+      setLoading(true);
+      const res = await axios.get('http://localhost:5000/api/meetings/search', {
+        params: { q: query },
+      });
+      setResults(res.data);
+    } catch (err) {
+      console.error('Search error:', err);
+      setResults([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -45,30 +46,28 @@ export default function Search() {
       </form>
 
       {/* Search Results */}
-      {!result && (
+      {loading && <Spinner />}
+
+      {!loading && results.length === 0 && (
         <div className="text-gray-500 text-sm italic text-center">
-          (This will be enabled once timestamped transcription is implemented.)
+          No matches found.
         </div>
       )}
 
-      {result && (
+      {!loading && results.length > 0 && (
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
           className="space-y-6"
         >
-          <h3 className="text-xl font-semibold text-blue-300">
-            Found {result.matches.length} matching lines
-          </h3>
-
-          {result.matches.map((item, index) => (
+          {results.map((meeting) => (
             <div
-              key={index}
-              className="flex items-start justify-between bg-zinc-900 border border-zinc-700 rounded-lg p-4 hover:bg-zinc-800 transition"
+              key={meeting._id}
+              className="bg-zinc-900 border border-zinc-700 rounded-lg p-4 hover:bg-zinc-800 transition"
             >
-              <p className="text-sm text-gray-200 max-w-lg">{item.text}</p>
-              <span className="text-blue-400 text-xs font-mono">{item.timestamp}</span>
+              <h3 className="text-lg font-semibold text-blue-300 mb-1">{meeting.title}</h3>
+              <p className="text-sm text-gray-300 line-clamp-3">{meeting.summary}</p>
             </div>
           ))}
         </motion.div>
@@ -76,3 +75,5 @@ export default function Search() {
     </div>
   );
 }
+
+server/controllers/
