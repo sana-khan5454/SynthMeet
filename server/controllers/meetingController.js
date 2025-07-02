@@ -105,3 +105,27 @@ exports.getAllMeetings = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+exports.getMeetingById = async (req, res) => {
+  try {
+    const meeting = await Meeting.findById(req.params.id);
+    if (!meeting) {
+      return res.status(404).json({ error: 'Meeting not found' });
+    }
+    res.json(meeting);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.deleteMeeting = async (req, res) => {
+  try {
+    const meeting = await Meeting.findByIdAndDelete(req.params.id);
+    if (!meeting) {
+      return res.status(404).json({ error: 'Meeting not found' });
+    }
+    res.json({ message: 'Meeting deleted' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
