@@ -6,6 +6,7 @@ const FormData = require('form-data');
 const axiosRetry = require('axios-retry').default; // <- this is the correct way for CommonJS
 const { OpenAI } = require('openai');
 const Meeting = require('../models/Meeting');
+const mongoose = require('mongoose');
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
