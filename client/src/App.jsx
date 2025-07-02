@@ -10,7 +10,7 @@ import Landing from './pages/Landing';
 import Search from './pages/Search';
 import Settings from './pages/Settings';
 import ExportPDF from './pages/ExportPDF';
-
+import RecorderPage from './pages/RecorderPage';
 
 export default function App() {
   return (
@@ -27,11 +27,12 @@ export default function App() {
             <Route path="/dashboard" element={<Dashboard />}/>
             <Route path="/history" element={<History />} />
             <Route path="/search" element={<Search />} />
-            <Route path="/export" element={<ExportPDF />} />
-            <Route path="/settings" element={<Settings />} />
+             <Route path="/record" element={<RecorderPage />} />
+            <Route path="/export" element={<ExportPDF />} />
+            <Route path="/settings" element={<Settings />} />
           </Routes>
         </main>
       </div>
-    </div>
-  );
+  </div>
+  );
 }
