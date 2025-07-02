@@ -109,10 +109,15 @@ exports.getAllMeetings = async (req, res) => {
 
 exports.getMeetingById = async (req, res) => {
   try {
+    if (!mongoose.isValidObjectId(req.params.id)) {
+      return res.status(400).json({ error: 'Invalid meeting ID' });
+    }
+
     const meeting = await Meeting.findById(req.params.id);
     if (!meeting) {
       return res.status(404).json({ error: 'Meeting not found' });
     }
+
     res.json(meeting);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -121,11 +126,16 @@ exports.getMeetingById = async (req, res) => {
 
 exports.deleteMeeting = async (req, res) => {
   try {
+    if (!mongoose.isValidObjectId(req.params.id)) {
+      return res.status(400).json({ error: 'Invalid meeting ID' });
+    }
+
     const meeting = await Meeting.findByIdAndDelete(req.params.id);
     if (!meeting) {
       return res.status(404).json({ error: 'Meeting not found' });
     }
-    res.json({ message: 'Meeting deleted' });
+
+    res.status(204).send();
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
