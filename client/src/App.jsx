@@ -1,15 +1,15 @@
 import { Routes, Route } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
-import Header from './components/Header';
+import HeaderFixed from './components/HeaderFixed';
 import Dashboard from './pages/Dashboard';
 import History from './pages/History';
-import LogIn from './pages/LogIn';
-import SignUp from './pages/SignUp';
-import Guest from './pages/Guest';
-import Landing from './pages/Landing';
-import Search from './pages/Search';
+import LogInPage from './pages/LogInPage';
+import SignUpPage from './pages/SignUpPage';
+import GuestPage from './pages/GuestPage';
+import LandingPage from './pages/LandingPage';
+import SearchPage from './pages/SearchPage';
 import Settings from './pages/Settings';
-import ExportPDF from './pages/ExportPDF';
+import ExportPDFPage from './pages/ExportPDFPage';
 import RecorderPage from './pages/RecorderPage';
 
 export default function App() {
@@ -17,18 +17,18 @@ export default function App() {
     <div className="flex min-h-screen bg-[#0D0D0D] text-white">
       <Sidebar />
       <div className="flex-1">
-        <Header />
+        <HeaderFixed />
         <main className="p-6">
           <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route path="/login" element={<LogIn />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/guest" element={<Guest />} />
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/login" element={<LogInPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
+            <Route path="/guest" element={<GuestPage />} />
             <Route path="/dashboard" element={<Dashboard />}/>
             <Route path="/history" element={<History />} />
-            <Route path="/search" element={<Search />} />
+            <Route path="/search" element={<SearchPage />} />
              <Route path="/record" element={<RecorderPage />} />
-            <Route path="/export" element={<ExportPDF />} />
+            <Route path="/export" element={<ExportPDFPage />} />
             <Route path="/settings" element={<Settings />} />
           </Routes>
         </main>

@@ -1,10 +1,14 @@
-import UploadMeeting from '../components/UploadMeeting';
-import Recorder from '../components/Recorder';
+import { useState } from 'react';
+import UploadMeetingFixed from '../components/UploadMeetingFixed';
+import RecorderFixed from '../components/RecorderFixed';
 import { MicrophoneIcon, ArrowUpTrayIcon } from '@heroicons/react/24/outline';
 
 export default function Dashboard() {
+  const [recordedAudio, setRecordedAudio] = useState(null);
+
   const handleRecordingComplete = (blob) => {
-    console.log("Audio recorded:", blob);
+    const file = new File([blob], `recording-${Date.now()}.webm`, { type: blob.type || 'audio/webm' });
+    setRecordedAudio(file);
   };
 
   return (
@@ -22,7 +26,7 @@ export default function Dashboard() {
               <ArrowUpTrayIcon className="w-7 h-7 text-blue-500" />
               <h2 className="text-2xl font-semibold text-white">Upload a Meeting</h2>
             </div>
-            <UploadMeeting />
+            <UploadMeetingFixed initialAudio={recordedAudio} />
           </div>
 
           {/* Recorder Section */}
@@ -31,7 +35,7 @@ export default function Dashboard() {
               <MicrophoneIcon className="w-7 h-7 text-blue-500" />
               <h2 className="text-2xl font-semibold text-white">Record a Meeting</h2>
             </div>
-            <Recorder onRecordingComplete={handleRecordingComplete} />
+            <RecorderFixed onRecordingComplete={handleRecordingComplete} />
           </div>
         </div>
       </div>

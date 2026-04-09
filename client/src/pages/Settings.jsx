@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { useAvatar } from '../context/AvatarContext';
 
+const supportEmail = 'sana5454khan5454@gmail.com';
+
 export default function Settings() {
   const { setAvatar } = useAvatar();
 
   const [preview, setPreview] = useState(localStorage.getItem('avatar') || '');
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(supportEmail);
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -36,6 +38,20 @@ export default function Settings() {
     <div className="p-6 text-white max-w-xl mx-auto">
       <h1 className="text-3xl font-bold text-blue-400 mb-2">Settings</h1>
       <p className="text-gray-400 mb-6">Update your profile, photo, and password here.</p>
+
+      <div className="mb-8 rounded-lg border border-zinc-700 bg-zinc-900 p-4">
+        <p className="text-sm font-semibold text-blue-300">Need help?</p>
+        <p className="mt-1 text-sm text-gray-400">
+          Contact SynthMeet support directly at{' '}
+          <a
+            href={`mailto:${supportEmail}`}
+            className="text-blue-400 underline underline-offset-4 hover:text-blue-300"
+          >
+            {supportEmail}
+          </a>
+          .
+        </p>
+      </div>
 
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* Profile Picture */}

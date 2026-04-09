@@ -34,6 +34,16 @@ export default function Sidebar() {
         <Link to="/export" className={navItemClass('/export', location.pathname)}>Export to PDF</Link>
         <Link to="/settings" className={navItemClass('/settings', location.pathname)}>Settings</Link>
       </nav>
+
+      <div className="mt-auto pt-6 text-xs text-gray-500">
+        Support:{' '}
+        <a
+          href="mailto:sana5454khan5454@gmail.com"
+          className="text-blue-400 hover:text-blue-300"
+        >
+          sana5454khan5454@gmail.com
+        </a>
+      </div>
     </aside>
   );
 }
