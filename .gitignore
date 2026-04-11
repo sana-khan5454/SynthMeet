@@ -1,0 +1,8 @@
+.vercel/
+node_modules/
+client/node_modules/
+client/dist/
+server/node_modules/
+server/uploads/
+server/.env
+*.log

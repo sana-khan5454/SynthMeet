@@ -1,0 +1,18 @@
+{
+  "name": "synthmeet",
+  "private": true,
+  "version": "1.0.0",
+  "description": "AI meeting assistant with audio upload, transcription, summarization, search, and PDF export.",
+  "scripts": {
+    "install:all": "npm --prefix client install && npm --prefix server install",
+    "dev:client": "npm --prefix client run dev",
+    "dev:server": "npm --prefix server run dev",
+    "dev": "powershell -NoProfile -Command \"Start-Process powershell -ArgumentList '-NoProfile','-Command','npm --prefix server run dev'; npm --prefix client run dev\"",
+    "build": "npm --prefix client run build",
+    "lint": "npm --prefix client run lint",
+    "start": "npm --prefix server run start"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

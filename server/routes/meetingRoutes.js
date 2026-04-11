@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const fs = require('fs');
-const path = require('path');
+const { getUploadsDirectory } = require('../lib/uploads');
 const {
   handleMeetingUpload,
   getAllMeetings,
@@ -12,9 +11,6 @@ const {
   getMeetingSegments,
   exportMeetingPdf,
 } = require('../controllers/meetingController');
-
-const uploadDirectory = path.join(__dirname, '..', 'uploads');
-fs.mkdirSync(uploadDirectory, { recursive: true });
 
 const allowedMimeTypes = new Set([
   'audio/mpeg',
@@ -34,7 +30,7 @@ const allowedMimeTypes = new Set([
 ]);
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, uploadDirectory),
+  destination: (req, file, cb) => cb(null, getUploadsDirectory()),
   filename: (req, file, cb) => {
     const safeName = file.originalname.replace(/[^\w.\-() ]+/g, '_');
     cb(null, `${Date.now()}-${safeName}`);

@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import UploadMeetingFixed from '../components/UploadMeetingFixed';
-import RecorderFixed from '../components/RecorderFixed';
+import UploadMeeting from '../components/UploadMeeting';
+import Recorder from '../components/Recorder';
 import { MicrophoneIcon, ArrowUpTrayIcon } from '@heroicons/react/24/outline';
 
 export default function Dashboard() {
@@ -26,7 +26,7 @@ export default function Dashboard() {
               <ArrowUpTrayIcon className="w-7 h-7 text-blue-500" />
               <h2 className="text-2xl font-semibold text-white">Upload a Meeting</h2>
             </div>
-            <UploadMeetingFixed initialAudio={recordedAudio} />
+            <UploadMeeting initialAudio={recordedAudio} />
           </div>
 
           {/* Recorder Section */}
@@ -35,7 +35,7 @@ export default function Dashboard() {
               <MicrophoneIcon className="w-7 h-7 text-blue-500" />
               <h2 className="text-2xl font-semibold text-white">Record a Meeting</h2>
             </div>
-            <RecorderFixed onRecordingComplete={handleRecordingComplete} />
+            <Recorder onRecordingComplete={handleRecordingComplete} />
           </div>
         </div>
       </div>

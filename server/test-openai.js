@@ -1,4 +1,4 @@
-require('dotenv').config();
+﻿require('dotenv').config();
 const { OpenAI } = require('openai');
 
 const openai = new OpenAI({
@@ -9,9 +9,9 @@ const openai = new OpenAI({
 (async () => {
   try {
     const response = await openai.models.list();
-    console.log("✅ OpenAI is working. Models available:");
-    console.log(response.data.map(model => model.id));
+    console.log('OpenAI is reachable. Models available:');
+    console.log(response.data.map((model) => model.id));
   } catch (err) {
-    console.error("❌ OpenAI connection failed:", err);
-  }
+    console.error('OpenAI connection failed:', err);
+  }
 })();

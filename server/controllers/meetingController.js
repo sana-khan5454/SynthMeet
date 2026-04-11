@@ -26,12 +26,20 @@ const formatTimestamp = (seconds = 0) => {
   return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
 };
 
+const ensureDatabaseReady = () => {
+  if (mongoose.connection.readyState !== 1) {
+    const error = new Error('Database is unavailable. Update MONGO_URI and restart the server.');
+    error.statusCode = 503;
+    throw error;
+  }
+};
+
 const buildAudioUrl = (req, audioPath) => {
   if (!audioPath) {
     return null;
   }
 
-  return `${req.protocol}://${req.get('host')}/${audioPath.replace(/\\/g, '/')}`;
+  return `${req.protocol}://${req.get('host')}/api/${audioPath.replace(/\\/g, '/')}`;
 };
 
 const ensureConfigured = () => {
@@ -167,6 +175,7 @@ const writeSectionHeading = (doc, text) => {
 
 exports.handleMeetingUpload = async (req, res) => {
   try {
+    ensureDatabaseReady();
     ensureConfigured();
 
     if (!req.file) {
@@ -226,15 +235,17 @@ exports.handleMeetingUpload = async (req, res) => {
 
 exports.getAllMeetings = async (req, res) => {
   try {
+    ensureDatabaseReady();
     const meetings = await Meeting.find().sort({ createdAt: -1 });
     res.json(meetings.map((meeting) => serializeMeeting(meeting, req)));
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(err.statusCode || 500).json({ error: err.message });
   }
 };
 
 exports.getMeetingById = async (req, res) => {
   try {
+    ensureDatabaseReady();
     if (!mongoose.isValidObjectId(req.params.id)) {
       return res.status(400).json({ error: 'Invalid meeting ID' });
     }
@@ -246,12 +257,13 @@ exports.getMeetingById = async (req, res) => {
 
     res.json(serializeMeeting(meeting, req));
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(err.statusCode || 500).json({ error: err.message });
   }
 };
 
 exports.getMeetingSegments = async (req, res) => {
   try {
+    ensureDatabaseReady();
     if (!mongoose.isValidObjectId(req.params.id)) {
       return res.status(400).json({ error: 'Invalid meeting ID' });
     }
@@ -269,12 +281,13 @@ exports.getMeetingSegments = async (req, res) => {
       segments: meeting.segments,
     });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(err.statusCode || 500).json({ error: err.message });
   }
 };
 
 exports.deleteMeeting = async (req, res) => {
   try {
+    ensureDatabaseReady();
     if (!mongoose.isValidObjectId(req.params.id)) {
       return res.status(400).json({ error: 'Invalid meeting ID' });
     }
@@ -291,12 +304,13 @@ exports.deleteMeeting = async (req, res) => {
 
     res.status(204).send();
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(err.statusCode || 500).json({ error: err.message });
   }
 };
 
 exports.searchMeetings = async (req, res) => {
   try {
+    ensureDatabaseReady();
     const q = typeof req.query.q === 'string' ? req.query.q.trim() : '';
     if (!q) {
       return res.status(400).json({ error: 'Missing query' });
@@ -326,12 +340,13 @@ exports.searchMeetings = async (req, res) => {
 
     res.json(results);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(err.statusCode || 500).json({ error: err.message });
   }
 };
 
 exports.exportMeetingPdf = async (req, res) => {
   try {
+    ensureDatabaseReady();
     if (!mongoose.isValidObjectId(req.params.id)) {
       return res.status(400).json({ error: 'Invalid meeting ID' });
     }
@@ -387,6 +402,6 @@ exports.exportMeetingPdf = async (req, res) => {
 
     doc.end();
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(err.statusCode || 500).json({ error: err.message });
   }
 };

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import MeetingCardFixed from './MeetingCardFixed';
-import SpinnerFixed from './SpinnerFixed';
+import MeetingCard from './MeetingCard';
+import Spinner from './Spinner';
 import api from '../lib/api';
 
 function MeetingList() {
@@ -24,7 +24,7 @@ function MeetingList() {
     fetchMeetings();
   }, []);
 
-  if (loading) return <SpinnerFixed />;
+  if (loading) return <Spinner />;
 
   if (error) {
     return <p className="text-red-400">{error}</p>;
@@ -37,7 +37,7 @@ function MeetingList() {
     <div className="max-w-3xl mx-auto mt-6">
       <h2 className="text-xl font-semibold text-blue-400 mb-4">Past Meetings</h2>
       {meetings.map((meeting) => (
-        <MeetingCardFixed key={meeting._id} meeting={meeting} />
+        <MeetingCard key={meeting._id} meeting={meeting} />
       ))}
     </div>
   );
